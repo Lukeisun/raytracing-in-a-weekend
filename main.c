@@ -40,11 +40,7 @@ int main(void) {
   // print_vec(half_Vu);
   // printf("focal - half\n");
   // print_vec(sub_vec(focal_vec, half_sub));
-  vec3 upper_left =
-      sub_vec(sub_vec(sub_vec(camera_center, focal_vec), half_Vu), half_Vv);
-  // sub_vec(camera_center, sub_vec(focal_vec, sub_vec(half_Vu, half_Vv)));
-  // printf("Upper Left\n");
-  // print_vec(upper_left);
+  vec3 upper_left = vsub_vec(4, camera_center, focal_vec, half_Vu, half_Vv);
   vec3 pixel00 = add_vec(upper_left, scalar_mult(add_vec(deltaU, deltaV), .5));
   // print_vec(pixel00);
   printf("P3\n%d %d\n255\n", image_width, image_height);

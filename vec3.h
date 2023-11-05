@@ -9,6 +9,7 @@ struct vec3 {
 void print_vec(vec3 v);
 vec3 add_vec(vec3 v, vec3 o);
 vec3 sub_vec(vec3 v, vec3 o);
+vec3 vsub_vec(int size, ...);
 vec3 mult_vec(vec3 v, vec3 o);
 vec3 scalar_div(vec3 v, double scalar);
 vec3 scalar_mult(vec3 v, double scalar);
