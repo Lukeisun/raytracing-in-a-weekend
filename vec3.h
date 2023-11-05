@@ -15,5 +15,6 @@ vec3 scalar_div(vec3 v, double scalar);
 vec3 scalar_mult(vec3 v, double scalar);
 vec3 scalar_add(vec3 v, double scalar);
 vec3 unit_vector(vec3 v);
+double dot(vec3 v, vec3 o);
 double length(vec3 v);
 #endif

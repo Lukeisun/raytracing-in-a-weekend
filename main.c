@@ -1,9 +1,30 @@
 #include "color.h"
 #include "ray.h"
 #include "vec3.h"
+#include <math.h>
+#include <stdbool.h>
 #include <stdio.h>
 vec3 ray_color(ray r);
+double hit_sphere(vec3 center, double radius, ray r) {
+  vec3 orign_sub_center = sub_vec(r.origin, center);
+  double a = dot(r.direction, r.direction);
+  double b = dot(scalar_mult(r.direction, 2), orign_sub_center);
+  double c = dot(orign_sub_center, orign_sub_center) - (radius * radius);
+  double discriminant = (b * b) - (4 * a * c);
+  if (discriminant < 0) {
+    return -1;
+  } else {
+    return (-b - sqrt(discriminant)) / (2.0 * a);
+  }
+}
+
 vec3 ray_color(ray r) {
+  vec3 center_circle = {0, 0, -1};
+  double t = hit_sphere(center_circle, 0.5, r);
+  if (t > 0.0) {
+    vec3 N = unit_vector(sub_vec(at(r, t), center_circle));
+    return scalar_mult((vec3){N.x + 1, N.y + 1, N.z + 1}, 0.5);
+  }
   vec3 unit_dir = unit_vector(r.direction);
   double a = 0.5 * (unit_dir.y + 1.0);
   // printf("%f\n", a);

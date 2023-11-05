@@ -51,4 +51,6 @@ vec3 scalar_add(vec3 v, double scalar) {
   return (vec3){x, y, z};
 }
 vec3 unit_vector(vec3 v) { return scalar_div(v, length(v)); }
+
+double dot(vec3 v, vec3 o) { return (v.x * o.x) + (v.y * o.y) + (v.z * o.z); }
 double length(vec3 v) { return sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z)); }
