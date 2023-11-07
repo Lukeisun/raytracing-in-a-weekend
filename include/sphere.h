@@ -3,9 +3,9 @@
 #include "hittable.h"
 #include "vec3.h"
 #include <stdbool.h>
-struct sphere {
+typedef struct sphere {
   vec3 center;
   double radius;
-} typedef sphere;
+} sphere;
 bool sphere_hit(sphere s, ray r, double tmin, double tmax, hit_record *rec);
 #endif

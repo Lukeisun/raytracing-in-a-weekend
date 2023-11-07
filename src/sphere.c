@@ -1,13 +1,13 @@
-#include "sphere.h"
-#include "hittable.h"
-#include "ray.h"
-#include "vec3.h"
+#include "../include/sphere.h"
+#include "../include/common.h"
+#include "../include/hittable.h"
 #include <math.h>
+#include <stdbool.h>
 bool sphere_hit(sphere s, ray r, double tmin, double tmax, hit_record *rec) {
   vec3 orign_sub_center = sub_vec(r.origin, s.center);
-  double a = length(r.direction);
+  double a = dot(r.direction, r.direction);
   double b = dot(r.direction, orign_sub_center);
-  double c = length(orign_sub_center) - (s.radius * s.radius);
+  double c = dot(orign_sub_center, orign_sub_center) - (s.radius * s.radius);
   double discriminant = (b * b) - (a * c);
   if (discriminant < 0) {
     return false;

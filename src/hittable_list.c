@@ -1,7 +1,7 @@
-#include "hittable_list.h"
-#include "hittable.h"
-#include "sphere.h"
-#include "vec3.h"
+#include "../include/hittable_list.h"
+#include "../include/common.h"
+#include "../include/hittable.h"
+#include "../include/sphere.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -27,7 +27,7 @@ bool iter_spheres(sphere_arr *h, ray r, double tmin, double tmax,
   hit_record temp;
   bool hit_anything = false;
   double closest = tmax;
-  for (int i = 0; i < h->used; i++) {
+  for (size_t i = 0; i < h->used; i++) {
     if (sphere_hit(h->array[i], r, tmin, closest, &temp)) {
       hit_anything = true;
       closest = temp.t;

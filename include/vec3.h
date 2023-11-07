@@ -1,11 +1,13 @@
 #ifndef VEC3_H
 #define VEC3_H
+#include <stdbool.h>
 #include <stdio.h>
-struct vec3 {
+typedef struct vec3 {
   double x;
   double y;
   double z;
-} typedef vec3;
+} vec3;
+bool eq_vec(vec3 v, vec3 o);
 void print_vec(vec3 v);
 vec3 add_vec(vec3 v, vec3 o);
 vec3 sub_vec(vec3 v, vec3 o);

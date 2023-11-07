@@ -1,6 +1,5 @@
-#include "hittable.h"
-#include "ray.h"
-#include "vec3.h"
+#include "../include/hittable.h"
+#include "../include/common.h"
 // outward normal must be unit length
 void set_face_normal(hit_record *hit, ray r, vec3 outward_normal) {
   hit->front_face = dot(r.direction, outward_normal) < 0;

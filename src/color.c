@@ -1,5 +1,5 @@
-#include "color.h"
-#include "vec3.h"
+#include "../include/color.h"
+#include "../include/common.h"
 void write_color(vec3 color) {
   int iR = (int)(255.99 * color.x);
   int iG = (int)(255.99 * color.y);
