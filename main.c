@@ -1,33 +1,20 @@
 #include "color.h"
+#include "hittable.h"
+#include "hittable_list.h"
 #include "ray.h"
 #include "vec3.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
-vec3 ray_color(ray r);
-double hit_sphere(vec3 center, double radius, ray r) {
-  vec3 orign_sub_center = sub_vec(r.origin, center);
-  double a = dot(r.direction, r.direction);
-  double b = dot(scalar_mult(r.direction, 2), orign_sub_center);
-  double c = dot(orign_sub_center, orign_sub_center) - (radius * radius);
-  double discriminant = (b * b) - (4 * a * c);
-  if (discriminant < 0) {
-    return -1;
-  } else {
-    return (-b - sqrt(discriminant)) / (2.0 * a);
-  }
-}
 
-vec3 ray_color(ray r) {
-  vec3 center_circle = {0, 0, -1};
-  double t = hit_sphere(center_circle, 0.5, r);
-  if (t > 0.0) {
-    vec3 N = unit_vector(sub_vec(at(r, t), center_circle));
-    return scalar_mult((vec3){N.x + 1, N.y + 1, N.z + 1}, 0.5);
+vec3 ray_color(ray r, sphere_arr *spheres) {
+  hit_record *rec;
+  if (iter_spheres(spheres, r, 0, INFINITY, rec)) {
+    vec3 test = scalar_mult(add_vec(rec->normal, (vec3){1.0, 1.0, 1.0}), 0.5);
+    return test;
   }
-  vec3 unit_dir = unit_vector(r.direction);
-  double a = 0.5 * (unit_dir.y + 1.0);
-  // printf("%f\n", a);
+  vec3 unit_direction = unit_vector(r.direction);
+  double a = 0.5 * (unit_direction.y + 1.0);
   return add_vec((scalar_mult((vec3){1.0, 1.0, 1.0}, 1.0 - a)),
                  scalar_mult((vec3){0.5, 0.7, 1.0}, a));
 }
@@ -64,6 +51,10 @@ int main(void) {
   vec3 upper_left = vsub_vec(4, camera_center, focal_vec, half_Vu, half_Vv);
   vec3 pixel00 = add_vec(upper_left, scalar_mult(add_vec(deltaU, deltaV), .5));
   // print_vec(pixel00);
+  sphere_arr spheres;
+  init_sphere_arr(&spheres, 10);
+  insert_sphere_arr(&spheres, (sphere){(vec3){0, 0, -1}, 0.5});
+  // insert_sphere_arr(&spheres, (sphere){(vec3){0, -100.5, -1}, 100});
   printf("P3\n%d %d\n255\n", image_width, image_height);
   for (int i = 0; i < image_height; i++) {
     fprintf(stderr, "\rScanlines Remainig: %d\n", (image_height - i));
@@ -72,7 +63,7 @@ int main(void) {
           pixel00, add_vec(scalar_mult(deltaU, j), scalar_mult(deltaV, i)));
       vec3 ray_dir = sub_vec(pixel_center, camera_center);
       ray r = {camera_center, ray_dir};
-      vec3 pixel_color = ray_color(r);
+      vec3 pixel_color = ray_color(r, &spheres);
       write_color(pixel_color);
     }
   }

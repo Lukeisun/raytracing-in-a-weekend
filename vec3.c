@@ -32,6 +32,12 @@ vec3 mult_vec(vec3 v, vec3 o) {
   double z = v.z * o.z;
   return (vec3){x, y, z};
 }
+vec3 negate_vec(vec3 v) {
+  v.x *= -1;
+  v.y *= -1;
+  v.z *= -1;
+  return v;
+}
 vec3 scalar_mult(vec3 v, double scalar) {
   double x = v.x * scalar;
   double y = v.y * scalar;
