@@ -22,13 +22,14 @@ void free_sphere_arr(sphere_arr *h) {
   h->array = NULL;
   h->size = h->used = 0;
 }
-bool iter_spheres(sphere_arr *h, ray r, double tmin, double tmax,
-                  hit_record *rec) {
+bool iter_spheres(sphere_arr *h, ray r, interval ray_t, hit_record *rec) {
   hit_record temp;
   bool hit_anything = false;
-  double closest = tmax;
+  double closest = ray_t.max;
+  // maybe use _Generic if we add more shapes
   for (size_t i = 0; i < h->used; i++) {
-    if (sphere_hit(h->array[i], r, tmin, closest, &temp)) {
+    if (sphere_hit(h->array[i], r, (interval){.min = ray_t.min, .max = closest},
+                   &temp)) {
       hit_anything = true;
       closest = temp.t;
       *rec = temp;

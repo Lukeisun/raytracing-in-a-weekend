@@ -2,8 +2,7 @@
 #include "../include/common.h"
 #include "../include/hittable.h"
 #include <math.h>
-#include <stdbool.h>
-bool sphere_hit(sphere s, ray r, double tmin, double tmax, hit_record *rec) {
+bool sphere_hit(sphere s, ray r, interval ray_t, hit_record *rec) {
   vec3 orign_sub_center = sub_vec(r.origin, s.center);
   double a = dot(r.direction, r.direction);
   double b = dot(r.direction, orign_sub_center);
@@ -14,9 +13,9 @@ bool sphere_hit(sphere s, ray r, double tmin, double tmax, hit_record *rec) {
   }
   double sqrt_discriminant = sqrt(discriminant);
   double root = (-b - sqrt_discriminant) / a;
-  if (root <= tmin || tmax <= root) {
+  if (!surrounds(ray_t, root)) {
     root = (-b + sqrt_discriminant) / a;
-    if (root <= tmin || tmax <= root) {
+    if (!surrounds(ray_t, root)) {
       return false;
     }
   }

@@ -1,6 +1,5 @@
 #include "../include/common.h"
 #include <stdarg.h>
-#include <stdbool.h>
 #include <stdio.h>
 void print_vec(vec3 v) { printf("[%f, %f, %f]\n", v.x, v.y, v.z); }
 bool eq_vec(vec3 v, vec3 o) { return v.x == o.x && v.y == o.y && v.z == o.z; }

@@ -2,7 +2,6 @@
 #define HITTABLE_H
 #include "ray.h"
 #include "vec3.h"
-#include <stdbool.h>
 typedef struct hit_record {
   vec3 p;
   vec3 normal;

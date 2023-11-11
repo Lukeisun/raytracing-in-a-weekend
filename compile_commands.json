@@ -1,0 +1,93 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c2x",
+      "-pedantic",
+      "-c",
+      "src/color.c"
+    ],
+    "directory": "/home/Lukeisun/Projects/Raytracer",
+    "file": "/home/Lukeisun/Projects/Raytracer/src/color.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c2x",
+      "-pedantic",
+      "-c",
+      "src/hittable.c"
+    ],
+    "directory": "/home/Lukeisun/Projects/Raytracer",
+    "file": "/home/Lukeisun/Projects/Raytracer/src/hittable.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c2x",
+      "-pedantic",
+      "-c",
+      "src/hittable_list.c"
+    ],
+    "directory": "/home/Lukeisun/Projects/Raytracer",
+    "file": "/home/Lukeisun/Projects/Raytracer/src/hittable_list.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c2x",
+      "-pedantic",
+      "-c",
+      "src/main.c"
+    ],
+    "directory": "/home/Lukeisun/Projects/Raytracer",
+    "file": "/home/Lukeisun/Projects/Raytracer/src/main.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c2x",
+      "-pedantic",
+      "-c",
+      "src/ray.c"
+    ],
+    "directory": "/home/Lukeisun/Projects/Raytracer",
+    "file": "/home/Lukeisun/Projects/Raytracer/src/ray.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c2x",
+      "-pedantic",
+      "-c",
+      "src/sphere.c"
+    ],
+    "directory": "/home/Lukeisun/Projects/Raytracer",
+    "file": "/home/Lukeisun/Projects/Raytracer/src/sphere.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c2x",
+      "-pedantic",
+      "-c",
+      "src/vec3.c"
+    ],
+    "directory": "/home/Lukeisun/Projects/Raytracer",
+    "file": "/home/Lukeisun/Projects/Raytracer/src/vec3.c"
+  }
+]

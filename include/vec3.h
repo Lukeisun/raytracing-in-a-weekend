@@ -1,6 +1,5 @@
 #ifndef VEC3_H
 #define VEC3_H
-#include <stdbool.h>
 #include <stdio.h>
 typedef struct vec3 {
   double x;

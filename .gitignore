@@ -2,3 +2,4 @@ instructor_implementation
 *.out
 *.ppm
 *.o
+.cache
