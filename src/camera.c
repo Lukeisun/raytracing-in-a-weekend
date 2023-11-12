@@ -1,8 +1,8 @@
 #include "../include/camera.h"
 #include "../include/common.h"
 #include <stdlib.h>
-camera init_camera(int image_width, int samples_per_pixel) {
-  camera cam = {.samples_per_pixel = samples_per_pixel};
+camera init_camera(int image_width) {
+  camera cam = {0};
   const double aspect_ratio = 16.0 / 9.0;
   cam.image_width = image_width;
   cam.image_height = (int)(cam.image_width / aspect_ratio);
@@ -33,18 +33,21 @@ void render(camera *cam, sphere_arr *spheres) {
       vec3 pixel_color = {0, 0, 0};
       for (int sample = 0; sample < cam->samples_per_pixel; sample++) {
         ray r = get_ray(cam, i, j);
-        pixel_color = add_vec(pixel_color, ray_color(&r, spheres));
+        pixel_color =
+            add_vec(pixel_color, ray_color(&r, cam->max_depth, spheres));
       }
       write_color(pixel_color, cam->samples_per_pixel);
     }
   }
 }
-vec3 ray_color(ray *r, sphere_arr *spheres) {
+vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
+  if (depth <= 0)
+    return (vec3){0, 0, 0};
   hit_record *rec = malloc(sizeof(hit_record));
-  interval initial_interval = {.min = 0, .max = INFINITY};
+  interval initial_interval = {.min = 0.001, .max = INFINITY};
   if (iter_spheres(spheres, *r, initial_interval, rec)) {
-    vec3 test = scalar_mult(add_vec(rec->normal, (vec3){1.0, 1.0, 1.0}), 0.5);
-    return test;
+    vec3 dir = random_on_hemisphere(&rec->normal);
+    return scalar_mult(ray_color(&(ray){rec->p, dir}, depth - 1, spheres), 0.5);
   }
   vec3 unit_direction = unit_vector(r->direction);
   double a = 0.5 * (unit_direction.y + 1.0);

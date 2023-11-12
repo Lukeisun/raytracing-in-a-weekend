@@ -60,3 +60,26 @@ vec3 unit_vector(vec3 v) { return scalar_div(v, length(v)); }
 
 double dot(vec3 v, vec3 o) { return (v.x * o.x) + (v.y * o.y) + (v.z * o.z); }
 double length(vec3 v) { return sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z)); }
+vec3 random_vec() {
+  return (vec3){random_double(), random_double(), random_double()};
+}
+vec3 random_vec_range(double min, double max) {
+  return (vec3){random_double_range(min, max), random_double_range(min, max),
+                random_double_range(min, max)};
+}
+vec3 random_in_unit_sphere() {
+  while (true) {
+    vec3 r = random_vec_range(-1, 1);
+    if (dot(r, r) < 1)
+      return r;
+  }
+}
+vec3 random_unit_vector() { return unit_vector(random_in_unit_sphere()); }
+
+vec3 random_on_hemisphere(vec3 *norm) {
+  vec3 on_unit_sphere = random_unit_vector();
+  if (dot(on_unit_sphere, *norm) > 0.0)
+    return on_unit_sphere;
+  else
+    return negate_vec(on_unit_sphere);
+}
