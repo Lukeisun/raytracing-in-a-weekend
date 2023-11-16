@@ -46,7 +46,7 @@ vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
   hit_record *rec = malloc(sizeof(hit_record));
   interval initial_interval = {.min = 0.001, .max = INFINITY};
   if (iter_spheres(spheres, *r, initial_interval, rec)) {
-    vec3 dir = random_on_hemisphere(&rec->normal);
+    vec3 dir = add_vec(rec->normal, random_unit_vector());
     return scalar_mult(ray_color(&(ray){rec->p, dir}, depth - 1, spheres), 0.5);
   }
   vec3 unit_direction = unit_vector(r->direction);
