@@ -1,5 +1,6 @@
 #include "../include/camera.h"
 #include "../include/common.h"
+#include "../include/material.h"
 #include <stdlib.h>
 camera init_camera(int image_width) {
   camera cam = {0};
@@ -46,8 +47,13 @@ vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
   hit_record *rec = malloc(sizeof(hit_record));
   interval initial_interval = {.min = 0.001, .max = INFINITY};
   if (iter_spheres(spheres, *r, initial_interval, rec)) {
-    vec3 dir = add_vec(rec->normal, random_unit_vector());
-    return scalar_mult(ray_color(&(ray){rec->p, dir}, depth - 1, spheres), 0.5);
+    ray *scattered = malloc(sizeof(ray));
+    vec3 *attenuation = malloc(sizeof(vec3));
+    if (scatter(rec->mat, r, rec, attenuation, scattered)) {
+      return mult_vec(rec->mat->albedo,
+                      ray_color(scattered, depth - 1, spheres));
+    }
+    return (vec3){0, 0, 0};
   }
   vec3 unit_direction = unit_vector(r->direction);
   double a = 0.5 * (unit_direction.y + 1.0);

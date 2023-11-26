@@ -25,4 +25,6 @@ vec3 random_vec_range(double min, double max);
 vec3 random_in_unit_sphere();
 vec3 random_unit_vector();
 vec3 random_on_hemisphere(vec3 *norm);
+bool near_zero(vec3 *v);
+vec3 reflect_vec(vec3 *v, vec3 *o);
 #endif

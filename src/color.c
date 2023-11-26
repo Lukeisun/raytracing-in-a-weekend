@@ -1,6 +1,6 @@
 #include "../include/color.h"
 #include "../include/common.h"
-double linear_to_gamma(vec3 *linear_vec) {
+void linear_to_gamma(vec3 *linear_vec) {
   linear_vec->x = sqrt(linear_vec->x);
   linear_vec->y = sqrt(linear_vec->y);
   linear_vec->z = sqrt(linear_vec->z);

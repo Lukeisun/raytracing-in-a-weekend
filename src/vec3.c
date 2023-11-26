@@ -1,4 +1,5 @@
 #include "../include/common.h"
+#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 void print_vec(vec3 v) { printf("[%f, %f, %f]\n", v.x, v.y, v.z); }
@@ -82,4 +83,13 @@ vec3 random_on_hemisphere(vec3 *norm) {
     return on_unit_sphere;
   else
     return negate_vec(on_unit_sphere);
+}
+bool near_zero(vec3 *v) {
+  double tolerance = 1e-8;
+  return (fabs(v->x) < tolerance) && (fabs(v->y) < tolerance) &&
+         (fabs(v->z) < tolerance);
+}
+vec3 reflect_vec(vec3 *v, vec3 *o) {
+  vec3 reflected_vec = sub_vec(*v, scalar_mult(*o, 2 * dot(*v, *o)));
+  return reflected_vec;
 }
