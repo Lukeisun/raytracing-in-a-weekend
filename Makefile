@@ -2,11 +2,13 @@ SRC_FILES := $(wildcard src/*.c)
 EXCL_MAIN_SRC := $(filter-out src/main.c, $(SRC_FILES))
 
 
-show: run
+show: run-redir
 	feh im.ppm
-run: raytracer
+run-redir: raytracer
 	./raytracer.out > im.ppm
 	make cleano
+run: raytracer
+	./raytracer.out
 raytracer: raytracer.o
 	gcc *.o -lm -o raytracer.out
 raytracer.o:

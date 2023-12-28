@@ -2,6 +2,7 @@
 #include "../include/common.h"
 #include "../include/material.h"
 #include <stdlib.h>
+#include <string.h>
 camera init_camera(int image_width) {
   camera cam = {0};
   const double aspect_ratio = 16.0 / 9.0;
@@ -28,8 +29,25 @@ camera init_camera(int image_width) {
 }
 void render(camera *cam, sphere_arr *spheres) {
   printf("P3\n%d %d\n255\n", cam->image_width, cam->image_height);
+  // int size = (cam->image_width * cam->image_height + 1);
+  // image_string should look like
+  // [ colored █,colored █, ... colored █, \n, ...
+  //   colored █,colored █, ... colored █, \n, \0]
+  // is this UB?
+  // not sure of a more concrete way to find this,
+  // formatted string looks like
+  // "\x1b[38;2;%d;%d;%dm█", r, g, b
+  // \x1b is 1 byte, each %d could be 3 digits, and end string char is 1
+  // █ is 4 bytes
+  // where h = \x1b, E = \0, and %d = 100
+  // "h[38;2;100;100;100m1234E" = 24
+  int max_size_of_pixel = 24;
+  int max_size = cam->image_height * cam->image_width * max_size_of_pixel +
+                 cam->image_height + 1;
+  char *image_string = malloc(max_size);
+  image_string[0] = '\0';
   for (int i = 0; i < cam->image_height; i++) {
-    fprintf(stderr, "\rScanlines Remainig: %d\n", (cam->image_height - i));
+    fprintf(stderr, "\rScanlines Remaining: %d\n", (cam->image_height - i));
     for (int j = 0; j < cam->image_width; j++) {
       vec3 pixel_color = {0, 0, 0};
       for (int sample = 0; sample < cam->samples_per_pixel; sample++) {
@@ -37,9 +55,13 @@ void render(camera *cam, sphere_arr *spheres) {
         pixel_color =
             add_vec(pixel_color, ray_color(&r, cam->max_depth, spheres));
       }
-      write_color(pixel_color, cam->samples_per_pixel);
+      write_color(pixel_color, cam->samples_per_pixel, &image_string);
     }
+    strncat(image_string, "\n", 2);
   }
+  fprintf(stderr, "%s", image_string);
+  // printf("\x1b[0m");
+  free(image_string);
 }
 vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
   if (depth <= 0)
