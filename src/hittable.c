@@ -11,8 +11,8 @@ void set_face_normal(hit_record *hit, ray r, vec3 outward_normal) {
     hit->normal = negate_vec(outward_normal);
   }
 }
-bool scatter_lambertian(material *mat, ray *r_in, hit_record *rec,
-                        vec3 *attenuation, ray *scattered) {
+bool scatter_lambertian(material *mat, __attribute__((unused)) ray *r_in,
+                        hit_record *rec, vec3 *attenuation, ray *scattered) {
   vec3 scatter_direction = add_vec(rec->normal, random_unit_vector());
   if (near_zero(&scatter_direction)) {
     scatter_direction = rec->normal;
@@ -51,17 +51,13 @@ bool scatter(material *mat, ray *r_in, hit_record *rec, vec3 *attenuation,
              ray *scattered) {
   switch (mat->material) {
   case LAMBERTIAN:
-    scatter_lambertian(mat, r_in, rec, attenuation, scattered);
-    break;
+    return scatter_lambertian(mat, r_in, rec, attenuation, scattered);
   case METAL:
-    scatter_metal(mat, r_in, rec, attenuation, scattered);
-    break;
+    return scatter_metal(mat, r_in, rec, attenuation, scattered);
   case DIELECTRIC:
-    scatter_dielectric(mat, r_in, rec, attenuation, scattered);
-    break;
+    return scatter_dielectric(mat, r_in, rec, attenuation, scattered);
   default:
     printf("Unknown material type\n");
     exit(1);
   }
-  attenuation = &mat->albedo;
 }
