@@ -4,6 +4,8 @@
 #include "common.h"
 #include "hittable.h"
 #include "hittable_list.h"
+#include <threads.h>
+// #define THREAD_COUNT 5
 typedef struct camera {
   int image_width;
   int image_height;

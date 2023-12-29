@@ -10,9 +10,9 @@ run-redir: raytracer
 run: raytracer
 	./raytracer.out
 raytracer: raytracer.o
-	gcc *.o -lm -o raytracer.out
+	gcc *.o -lm -lpthread -o raytracer.out
 raytracer.o:
-	gcc -Wall -Wextra -std=c2x -pedantic -lm -c src/*.c;
+	gcc -Wall -Wextra -std=c2x -pedantic -lm -c -lpthread src/*.c;
 
 test.o:
 	gcc -Wall -Wextra -std=c2x -pedantic -c tests/*.c $(EXCL_MAIN_SRC) -lm ;

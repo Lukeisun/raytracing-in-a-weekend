@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main(void) {
   sphere_arr spheres;
@@ -29,5 +30,9 @@ int main(void) {
   camera cam = init_camera(400);
   cam.samples_per_pixel = 100;
   cam.max_depth = 50;
+  clock_t begin = clock();
   render(&cam, &spheres);
+  clock_t end = clock();
+  fprintf(stderr, "Time to render: %f seconds\n",
+          (double)(end - begin) / CLOCKS_PER_SEC);
 }
