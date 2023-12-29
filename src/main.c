@@ -1,9 +1,9 @@
-#include "../include/camera.h"
-#include "../include/color.h"
-#include "../include/common.h"
-#include "../include/hittable.h"
-#include "../include/hittable_list.h"
-#include "../include/material.h"
+#include "camera.h"
+#include "color.h"
+#include "common.h"
+#include "hittable.h"
+#include "hittable_list.h"
+#include "material.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

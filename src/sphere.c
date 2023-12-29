@@ -1,6 +1,6 @@
-#include "../include/sphere.h"
-#include "../include/common.h"
-#include "../include/hittable.h"
+#include "sphere.h"
+#include "common.h"
+#include "hittable.h"
 #include <math.h>
 bool sphere_hit(sphere s, ray r, interval ray_t, hit_record *rec) {
   vec3 orign_sub_center = sub_vec(r.origin, s.center);

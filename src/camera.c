@@ -1,6 +1,6 @@
-#include "../include/camera.h"
-#include "../include/common.h"
-#include "../include/material.h"
+#include "camera.h"
+#include "common.h"
+#include "material.h"
 #include <stdlib.h>
 #include <string.h>
 camera init_camera(int image_width) {

@@ -1,4 +1,4 @@
-#include "../include/common.h"
+#include "common.h"
 #include <math.h>
 #include <stdarg.h>
 #include <stdio.h>

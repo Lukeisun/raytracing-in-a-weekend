@@ -1,4 +1,4 @@
-#include "../include/common.h"
+#include "common.h"
 #include <math.h>
 bool contains(interval i, double x) { return i.min <= x && x <= i.max; }
 bool surrounds(interval i, double x) { return i.min < x && x < i.max; }

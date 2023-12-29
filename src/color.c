@@ -1,5 +1,5 @@
-#include "../include/color.h"
-#include "../include/common.h"
+#include "color.h"
+#include "common.h"
 #include <stdio.h>
 #include <string.h>
 void linear_to_gamma(vec3 *linear_vec) {

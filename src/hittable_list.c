@@ -1,7 +1,7 @@
-#include "../include/hittable_list.h"
-#include "../include/common.h"
-#include "../include/hittable.h"
-#include "../include/sphere.h"
+#include "hittable_list.h"
+#include "common.h"
+#include "hittable.h"
+#include "sphere.h"
 #include <stdio.h>
 #include <stdlib.h>
 
