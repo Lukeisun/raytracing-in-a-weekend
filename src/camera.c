@@ -42,6 +42,9 @@ void render(camera *cam, sphere_arr *spheres) {
   // █ is 4 bytes
   // where h = \x1b, E = \0, and %d = 100
   // "h[38;2;100;100;100m1234E" = 24
+  // you can pretty much ignore all the image_string stuff.
+  // I think at somepoint I will move printing to a terminal stuff
+  // into another program as it doesnt really belong here.
   int max_size_of_pixel = 24;
   int max_size = cam->image_height * cam->image_width * max_size_of_pixel +
                  cam->image_height + 1;
