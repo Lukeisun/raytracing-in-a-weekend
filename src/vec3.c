@@ -89,7 +89,19 @@ bool near_zero(vec3 *v) {
   return (fabs(v->x) < tolerance) && (fabs(v->y) < tolerance) &&
          (fabs(v->z) < tolerance);
 }
-vec3 reflect_vec(vec3 *v, vec3 *o) {
-  vec3 reflected_vec = sub_vec(*v, scalar_mult(*o, 2 * dot(*v, *o)));
+vec3 reflect_vec(vec3 v, vec3 o) {
+  vec3 reflected_vec = sub_vec(v, scalar_mult(o, 2 * dot(v, o)));
   return reflected_vec;
+}
+vec3 refract_vec(vec3 v, vec3 o, double etai_over_etat) {
+  double cos_theta = 1.0;
+  double r = dot(negate_vec(v), o);
+  if (r < 1.0) {
+    cos_theta = r;
+  }
+  vec3 r_out_perp =
+      scalar_mult((add_vec(v, scalar_mult(o, cos_theta))), etai_over_etat);
+  vec3 r_out_parallel =
+      scalar_mult(o, -sqrt(fabs(1.0 - dot(r_out_perp, r_out_perp))));
+  return add_vec(r_out_perp, r_out_parallel);
 }

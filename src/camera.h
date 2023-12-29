@@ -1,8 +1,5 @@
 #ifndef CAMERA_H
 #define CAMERA_H
-#include "color.h"
-#include "common.h"
-#include "hittable.h"
 #include "hittable_list.h"
 typedef struct camera {
   int image_width;

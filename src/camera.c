@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "color.h"
 #include "common.h"
 #include "material.h"
 #include <stdlib.h>
@@ -72,8 +73,7 @@ vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
     ray *scattered = malloc(sizeof(ray));
     vec3 *attenuation = malloc(sizeof(vec3));
     if (scatter(rec->mat, r, rec, attenuation, scattered)) {
-      return mult_vec(rec->mat->albedo,
-                      ray_color(scattered, depth - 1, spheres));
+      return mult_vec(*attenuation, ray_color(scattered, depth - 1, spheres));
     }
     return (vec3){0, 0, 0};
   }

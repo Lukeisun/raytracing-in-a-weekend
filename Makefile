@@ -9,6 +9,7 @@ run-redir: raytracer
 	make cleano
 run: raytracer
 	./raytracer.out
+	make cleano
 raytracer: raytracer.o
 	gcc *.o -lm -o raytracer.out
 raytracer.o:

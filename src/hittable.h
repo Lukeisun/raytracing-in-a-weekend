@@ -10,8 +10,13 @@ typedef struct hit_record {
   material *mat;
 } hit_record;
 void set_face_normal(hit_record *hit, ray r, vec3 outward_normal);
-bool scatter_lambertian(hit_record *rec, ray *scattered);
-bool scatter_metal(ray *r_in, hit_record *rec, ray *scattered);
+
+bool scatter_metal(material *mat, ray *r_in, hit_record *rec, vec3 *attenuation,
+                   ray *scattered);
+bool scatter_lambertian(material *mat, ray *r_in, hit_record *rec,
+                        vec3 *attenuation, ray *scattered);
+bool scatter_dielectric(material *mat, ray *r_in, hit_record *rec,
+                        vec3 *attenuation, ray *scattered);
 bool scatter(material *mat, ray *r_in, hit_record *rec, vec3 *attenuation,
              ray *scattered);
 #endif
