@@ -22,8 +22,9 @@ bool sphere_hit(sphere s, ray r, interval ray_t, hit_record *rec) {
   rec->t = root;
   rec->p = at(r, rec->t);
   rec->mat = s.mat;
-  vec3 outward_normal =
-      unit_vector(scalar_div(sub_vec(rec->p, s.center), s.radius));
+  // vec3 outward_normal =
+  //     unit_vector(scalar_div(sub_vec(rec->p, s.center), s.radius));
+  vec3 outward_normal = scalar_div(sub_vec(rec->p, s.center), s.radius);
   set_face_normal(rec, r, outward_normal);
   return true;
 }

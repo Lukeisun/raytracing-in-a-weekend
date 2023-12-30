@@ -27,7 +27,7 @@ void write_color(vec3 color, int samples_per_pixel, char **image_string) {
   int iR = (int)(256 * clamp(intensity, color.x));
   int iG = (int)(256 * clamp(intensity, color.y));
   int iB = (int)(256 * clamp(intensity, color.z));
-  char *s = pixel(iR, iG, iB);
-  strncat(*image_string, s, strlen(s));
+  // char *s = pixel(iR, iG, iB);
+  // strncat(*image_string, s, strlen(s));
   printf("%d %d %d\n", iR, iG, iB);
 }

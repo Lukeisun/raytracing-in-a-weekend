@@ -27,6 +27,8 @@ int main(void) {
   insert_sphere_arr(&spheres,
                     (sphere){(vec3){0, -100.5, -1}, 100, &material_ground});
   insert_sphere_arr(&spheres, (sphere){(vec3){-1, 0, -1}, 0.5, &material_left});
+  insert_sphere_arr(&spheres,
+                    (sphere){(vec3){-1, 0, -1}, -0.4, &material_left});
   insert_sphere_arr(&spheres, (sphere){(vec3){1, 0, -1}, 0.5, &material_right});
   camera cam = init_camera(400);
   cam.samples_per_pixel = 100;

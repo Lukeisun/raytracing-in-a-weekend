@@ -94,11 +94,7 @@ vec3 reflect_vec(vec3 v, vec3 o) {
   return reflected_vec;
 }
 vec3 refract_vec(vec3 v, vec3 o, double etai_over_etat) {
-  double cos_theta = 1.0;
-  double r = dot(negate_vec(v), o);
-  if (r < 1.0) {
-    cos_theta = r;
-  }
+  double cos_theta = fmin(dot(negate_vec(v), o), 1.0);
   vec3 r_out_perp =
       scalar_mult((add_vec(v, scalar_mult(o, cos_theta))), etai_over_etat);
   vec3 r_out_parallel =

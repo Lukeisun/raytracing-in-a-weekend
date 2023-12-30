@@ -21,21 +21,27 @@ bool scatter_lambertian(material *mat, __attribute__((unused)) ray *r_in,
   *scattered = (ray){rec->p, scatter_direction};
   return true;
 }
+static double reflectance(double cosine, double ref_idx) {
+  double r0 = (1 - ref_idx) / (1 + ref_idx);
+  r0 = r0 * r0;
+  return r0 + (1 - r0) * pow((1 - cosine), 5);
+}
 bool scatter_dielectric(material *mat, ray *r_in, hit_record *rec,
                         vec3 *attenuation, ray *scattered) {
   *attenuation = (vec3){1.0, 1.0, 1.0};
   double refraction_ratio = rec->front_face ? (1.0 / mat->ir) : mat->ir;
   vec3 unit_dir = unit_vector(r_in->direction);
   double cos_theta = fmin(dot(negate_vec(unit_dir), rec->normal), 1.0);
-  double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
-  bool cannot_refract = refraction_ratio * sin_theta > 1.0;
-  vec3 direction;
-  if (cannot_refract) {
-    direction = reflect_vec(unit_dir, rec->normal);
+  double sin_theta = sqrt(1.0 - (cos_theta * cos_theta));
+  bool cannot_refract = (refraction_ratio * sin_theta) > 1.0;
+  vec3 *direction = malloc(sizeof(vec3));
+  if (cannot_refract ||
+      reflectance(cos_theta, refraction_ratio) > random_double()) {
+    *direction = reflect_vec(unit_dir, rec->normal);
   } else {
-    direction = refract_vec(unit_dir, rec->normal, refraction_ratio);
+    *direction = refract_vec(unit_dir, rec->normal, refraction_ratio);
   }
-  *scattered = (ray){rec->p, direction};
+  *scattered = (ray){rec->p, *direction};
   return true;
 }
 bool scatter_metal(material *mat, ray *r_in, hit_record *rec, vec3 *attenuation,

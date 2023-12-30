@@ -61,11 +61,11 @@ void render(camera *cam, sphere_arr *spheres) {
       }
       write_color(pixel_color, cam->samples_per_pixel, &image_string);
     }
-    strncat(image_string, "\n", 2);
+    // strncat(image_string, "\n", 2);
   }
-  fprintf(stderr, "%s", image_string);
+  // fprintf(stderr, "%s", image_string);
   // printf("\x1b[0m");
-  free(image_string);
+  // free(image_string);
 }
 vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
   if (depth <= 0)
