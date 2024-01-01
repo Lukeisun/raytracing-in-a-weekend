@@ -5,3 +5,8 @@ You can see the results my simply running Make, note that this requires you to h
 If you'd like to use a different program you can just create the .ppm file by doing `make run > {name}.ppm`
 
 If you have any suggestions I would love to hear them! I have never really messed around with Makefiles and I suspect that it is not great in its current state but it works for my purposes so far. Also this is my first big C project, so I also suspect that I am not doing great things with headers.
+
+## TODO
+- Continue on with second book
+- Create way for the program to handle different types of objects (More than just spheres) 
+- Optimize performance 
