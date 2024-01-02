@@ -34,8 +34,6 @@ void render(camera *cam, sphere_arr *spheres) {
   // image_string should look like
   // [ colored █,colored █, ... colored █, \n, ...
   //   colored █,colored █, ... colored █, \n, \0]
-  // is this UB?
-  // not sure of a more concrete way to find this,
   // formatted string looks like
   // "\x1b[38;2;%d;%d;%dm█", r, g, b
   // \x1b is 1 byte, each %d could be 3 digits, and end string char is 1
@@ -46,8 +44,9 @@ void render(camera *cam, sphere_arr *spheres) {
   // I think at somepoint I will move printing to a terminal stuff
   // into another program as it doesnt really belong here.
   int max_size_of_pixel = 24;
-  int max_size = cam->image_height * cam->image_width * max_size_of_pixel +
-                 cam->image_height + 1;
+  // int max_size = cam->image_height * cam->image_width * max_size_of_pixel +
+  //                cam->image_height + 1;
+  int max_size = 1;
   char *image_string = malloc(max_size);
   image_string[0] = '\0';
   for (int i = 0; i < cam->image_height; i++) {
@@ -76,10 +75,18 @@ vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
     ray *scattered = malloc(sizeof(ray));
     vec3 *attenuation = malloc(sizeof(vec3));
     if (scatter(rec->mat, r, rec, attenuation, scattered)) {
-      return mult_vec(*attenuation, ray_color(scattered, depth - 1, spheres));
+      vec3 ret =
+          mult_vec(*attenuation, ray_color(scattered, depth - 1, spheres));
+      free(scattered);
+      free(attenuation);
+      return ret;
     }
+    free(rec);
+    free(scattered);
+    free(attenuation);
     return (vec3){0, 0, 0};
   }
+  free(rec);
   vec3 unit_direction = unit_vector(r->direction);
   double a = 0.5 * (unit_direction.y + 1.0);
   return add_vec((scalar_mult((vec3){1.0, 1.0, 1.0}, 1.0 - a)),

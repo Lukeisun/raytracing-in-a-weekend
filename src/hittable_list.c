@@ -23,16 +23,14 @@ void free_sphere_arr(sphere_arr *h) {
   h->size = h->used = 0;
 }
 bool iter_spheres(sphere_arr *h, ray r, interval ray_t, hit_record *rec) {
-  hit_record *temp = malloc(sizeof(hit_record));
   bool hit_anything = false;
   double closest = ray_t.max;
   // maybe use _Generic if we add more shapes
   for (size_t i = 0; i < h->used; i++) {
     if (sphere_hit(h->array[i], r, (interval){.min = ray_t.min, .max = closest},
-                   temp)) {
+                   rec)) {
       hit_anything = true;
-      closest = temp->t;
-      *rec = *temp;
+      closest = rec->t;
     }
   }
   return hit_anything;

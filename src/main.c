@@ -38,4 +38,5 @@ int main(void) {
   clock_t end = clock();
   fprintf(stderr, "Time to render: %f seconds\n",
           (double)(end - begin) / CLOCKS_PER_SEC);
+  free_sphere_arr(&spheres);
 }
