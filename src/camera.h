@@ -6,6 +6,10 @@ typedef struct camera {
   int image_height;
   int samples_per_pixel;
   int max_depth;
+  double vfov;
+  vec3 v_up;
+  vec3 look_at;
+  vec3 look_from;
   vec3 center;
   vec3 pixel00;
   vec3 pixel_delta_u;

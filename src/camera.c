@@ -2,19 +2,25 @@
 #include "color.h"
 #include "common.h"
 #include "material.h"
+#include "vec3.h"
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-camera init_camera(int image_width) {
+double degrees_to_radians(double angle) { return (angle * PI) / 180.0; }
+camera init_camera(int image_width, vec3 look_from, vec3 look_at) {
   camera cam = {0};
+  cam.center = look_from;
   const double aspect_ratio = 16.0 / 9.0;
+  double focal_length = length(sub_vec(look_from, look_at));
   cam.image_width = image_width;
   cam.image_height = (int)(cam.image_width / aspect_ratio);
-  double viewport_height = 2.0;
+  cam.vfov = 90;
+  double theta = degrees_to_radians(cam.vfov);
+  double h = tan(theta / 2);
+  double viewport_height = 2 * h * focal_length;
   double viewport_width =
       viewport_height * ((double)cam.image_width / cam.image_height);
   // distance from viewport to camera
-  double focal_length = 1.0;
-  cam.center = (vec3){0, 0, 0};
   vec3 viewport_u = {viewport_width, 0, 0};
   vec3 viewport_v = {0, -viewport_height, 0};
   vec3 half_Vu = scalar_div(viewport_u, 2.0);
