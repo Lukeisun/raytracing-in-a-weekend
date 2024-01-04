@@ -16,7 +16,7 @@ typedef struct camera {
   vec3 pixel_delta_v;
 } camera;
 
-camera init_camera(int image_width);
+void init_camera(camera *cam);
 void render(camera *cam, sphere_arr *spheres);
 vec3 ray_color(ray *r, int depth, sphere_arr *spheres);
 ray get_ray(camera *cam, int i, int j);

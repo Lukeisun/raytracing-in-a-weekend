@@ -7,32 +7,32 @@
 #include <stdlib.h>
 #include <string.h>
 double degrees_to_radians(double angle) { return (angle * PI) / 180.0; }
-camera init_camera(int image_width, vec3 look_from, vec3 look_at) {
-  camera cam = {0};
-  cam.center = look_from;
+void init_camera(camera *cam) {
+  const vec3 vup = {0, 1, 0};
+  cam->center = cam->look_from;
   const double aspect_ratio = 16.0 / 9.0;
-  double focal_length = length(sub_vec(look_from, look_at));
-  cam.image_width = image_width;
-  cam.image_height = (int)(cam.image_width / aspect_ratio);
-  cam.vfov = 90;
-  double theta = degrees_to_radians(cam.vfov);
+  double focal_length = length(sub_vec(cam->look_from, cam->look_at));
+  cam->image_height = (int)(cam->image_width / aspect_ratio);
+  double theta = degrees_to_radians(cam->vfov);
   double h = tan(theta / 2);
   double viewport_height = 2 * h * focal_length;
   double viewport_width =
-      viewport_height * ((double)cam.image_width / cam.image_height);
+      viewport_height * ((double)cam->image_width / cam->image_height);
   // distance from viewport to camera
-  vec3 viewport_u = {viewport_width, 0, 0};
-  vec3 viewport_v = {0, -viewport_height, 0};
+  vec3 w = unit_vector(sub_vec(cam->look_from, cam->look_at));
+  vec3 u = unit_vector(cross_vec(vup, w));
+  vec3 v = cross_vec(w, u);
+  vec3 viewport_u = scalar_mult(u, viewport_width);
+  vec3 viewport_v = scalar_mult(negate_vec(v), viewport_height);
   vec3 half_Vu = scalar_div(viewport_u, 2.0);
   vec3 half_Vv = scalar_div(viewport_v, 2.0);
-  vec3 focal_vec = {0, 0, focal_length};
-  vec3 upper_left = vsub_vec(4, cam.center, focal_vec, half_Vu, half_Vv);
-  cam.pixel_delta_u = scalar_div(viewport_u, cam.image_width);
-  cam.pixel_delta_v = scalar_div(viewport_v, cam.image_height);
-  cam.pixel00 =
+  vec3 upper_left =
+      vsub_vec(4, cam->center, scalar_mult(w, focal_length), half_Vu, half_Vv);
+  cam->pixel_delta_u = scalar_div(viewport_u, cam->image_width);
+  cam->pixel_delta_v = scalar_div(viewport_v, cam->image_height);
+  cam->pixel00 =
       add_vec(upper_left,
-              scalar_mult(add_vec(cam.pixel_delta_u, cam.pixel_delta_v), .5));
-  return cam;
+              scalar_mult(add_vec(cam->pixel_delta_u, cam->pixel_delta_v), .5));
 }
 void render(camera *cam, sphere_arr *spheres) {
   printf("P3\n%d %d\n255\n", cam->image_width, cam->image_height);
@@ -49,7 +49,7 @@ void render(camera *cam, sphere_arr *spheres) {
   // you can pretty much ignore all the image_string stuff.
   // I think at somepoint I will move printing to a terminal stuff
   // into another program as it doesnt really belong here.
-  int max_size_of_pixel = 24;
+  // int max_size_of_pixel = 24;
   // int max_size = cam->image_height * cam->image_width * max_size_of_pixel +
   //                cam->image_height + 1;
   int max_size = 1;

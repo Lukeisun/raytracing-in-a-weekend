@@ -1,3 +1,4 @@
+#include "vec3.h"
 #include "common.h"
 #include <math.h>
 #include <stdarg.h>
@@ -56,6 +57,13 @@ vec3 scalar_add(vec3 v, double scalar) {
   double y = v.y + scalar;
   double z = v.z + scalar;
   return (vec3){x, y, z};
+}
+vec3 cross_vec(vec3 u, vec3 o) {
+  return (vec3){
+      .x = (u.y * o.z) - (u.z * o.y),
+      .y = (u.z * o.x) - (u.x * o.z),
+      .z = (u.x * o.y) - (u.y * o.x),
+  };
 }
 vec3 unit_vector(vec3 v) { return scalar_div(v, length(v)); }
 
