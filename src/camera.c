@@ -11,11 +11,10 @@ void init_camera(camera *cam) {
   const vec3 vup = {0, 1, 0};
   cam->center = cam->look_from;
   const double aspect_ratio = 16.0 / 9.0;
-  double focal_length = length(sub_vec(cam->look_from, cam->look_at));
   cam->image_height = (int)(cam->image_width / aspect_ratio);
   double theta = degrees_to_radians(cam->vfov);
   double h = tan(theta / 2);
-  double viewport_height = 2 * h * focal_length;
+  double viewport_height = 2 * h * cam->focus_dist;
   double viewport_width =
       viewport_height * ((double)cam->image_width / cam->image_height);
   // distance from viewport to camera
@@ -26,13 +25,17 @@ void init_camera(camera *cam) {
   vec3 viewport_v = scalar_mult(negate_vec(v), viewport_height);
   vec3 half_Vu = scalar_div(viewport_u, 2.0);
   vec3 half_Vv = scalar_div(viewport_v, 2.0);
-  vec3 upper_left =
-      vsub_vec(4, cam->center, scalar_mult(w, focal_length), half_Vu, half_Vv);
+  vec3 upper_left = vsub_vec(4, cam->center, scalar_mult(w, cam->focus_dist),
+                             half_Vu, half_Vv);
   cam->pixel_delta_u = scalar_div(viewport_u, cam->image_width);
   cam->pixel_delta_v = scalar_div(viewport_v, cam->image_height);
   cam->pixel00 =
       add_vec(upper_left,
               scalar_mult(add_vec(cam->pixel_delta_u, cam->pixel_delta_v), .5));
+  double defocus_radius =
+      cam->focus_dist * tan(degrees_to_radians(cam->defocus_angle / 2.0));
+  cam->defocus_disk_u = scalar_mult(u, defocus_radius);
+  cam->defocus_disk_v = scalar_mult(v, defocus_radius);
 }
 void render(camera *cam, sphere_arr *spheres) {
   printf("P3\n%d %d\n255\n", cam->image_width, cam->image_height);
@@ -41,7 +44,7 @@ void render(camera *cam, sphere_arr *spheres) {
   // [ colored █,colored █, ... colored █, \n, ...
   //   colored █,colored █, ... colored █, \n, \0]
   // formatted string looks like
-  // "\x1b[38;2;%d;%d;%dm█", r, g, b
+  // "\x1b[38;2;%d;%d;%dm█", r, g, ray_originb
   // \x1b is 1 byte, each %d could be 3 digits, and end string char is 1
   // █ is 4 bytes
   // where h = \x1b, E = \0, and %d = 100
@@ -92,13 +95,20 @@ vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
   return add_vec((scalar_mult((vec3){1.0, 1.0, 1.0}, 1.0 - a)),
                  scalar_mult((vec3){0.5, 0.7, 1.0}, a));
 }
+static vec3 defocus_disk_sample(camera *cam) {
+  vec3 p = random_in_unit_disk();
+  return add_vec(cam->center, add_vec(scalar_mult(cam->defocus_disk_u, p.x),
+                                      scalar_mult(cam->defocus_disk_v, p.y)));
+}
 ray get_ray(camera *cam, int i, int j) {
   vec3 pixel_center =
       add_vec(cam->pixel00, add_vec(scalar_mult(cam->pixel_delta_u, j),
                                     scalar_mult(cam->pixel_delta_v, i)));
   vec3 pixel_sample = add_vec(pixel_center, pixel_sample_square(cam));
+  vec3 ray_origin =
+      (cam->defocus_angle <= 0) ? cam->center : defocus_disk_sample(cam);
   vec3 ray_dir = sub_vec(pixel_sample, cam->center);
-  return (ray){cam->center, ray_dir};
+  return (ray){ray_origin, ray_dir};
 }
 vec3 pixel_sample_square(camera *cam) {
   double px = -.5 + random_double();

@@ -69,6 +69,24 @@ vec3 unit_vector(vec3 v) { return scalar_div(v, length(v)); }
 
 double dot(vec3 v, vec3 o) { return (v.x * o.x) + (v.y * o.y) + (v.z * o.z); }
 double length(vec3 v) { return sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z)); }
+bool near_zero(vec3 *v) {
+  double tolerance = 1e-8;
+  return (fabs(v->x) < tolerance) && (fabs(v->y) < tolerance) &&
+         (fabs(v->z) < tolerance);
+}
+vec3 reflect_vec(vec3 v, vec3 o) {
+  vec3 reflected_vec = sub_vec(v, scalar_mult(o, 2 * dot(v, o)));
+  return reflected_vec;
+}
+vec3 refract_vec(vec3 v, vec3 o, double etai_over_etat) {
+  double cos_theta = fmin(dot(negate_vec(v), o), 1.0);
+  vec3 r_out_perp =
+      scalar_mult((add_vec(v, scalar_mult(o, cos_theta))), etai_over_etat);
+  vec3 r_out_parallel =
+      scalar_mult(o, -sqrt(fabs(1.0 - dot(r_out_perp, r_out_perp))));
+  return add_vec(r_out_perp, r_out_parallel);
+}
+// RANDOM
 vec3 random_vec() {
   return (vec3){random_double(), random_double(), random_double()};
 }
@@ -92,20 +110,13 @@ vec3 random_on_hemisphere(vec3 *norm) {
   else
     return negate_vec(on_unit_sphere);
 }
-bool near_zero(vec3 *v) {
-  double tolerance = 1e-8;
-  return (fabs(v->x) < tolerance) && (fabs(v->y) < tolerance) &&
-         (fabs(v->z) < tolerance);
-}
-vec3 reflect_vec(vec3 v, vec3 o) {
-  vec3 reflected_vec = sub_vec(v, scalar_mult(o, 2 * dot(v, o)));
-  return reflected_vec;
-}
-vec3 refract_vec(vec3 v, vec3 o, double etai_over_etat) {
-  double cos_theta = fmin(dot(negate_vec(v), o), 1.0);
-  vec3 r_out_perp =
-      scalar_mult((add_vec(v, scalar_mult(o, cos_theta))), etai_over_etat);
-  vec3 r_out_parallel =
-      scalar_mult(o, -sqrt(fabs(1.0 - dot(r_out_perp, r_out_perp))));
-  return add_vec(r_out_perp, r_out_parallel);
+vec3 random_in_unit_disk() {
+  while (true) {
+    vec3 p = (vec3){.x = random_double_range(-1, 1),
+                    .y = random_double_range(-1, 1),
+                    .z = 0};
+    if (dot(p, p) < 1) {
+      return p;
+    }
+  }
 }

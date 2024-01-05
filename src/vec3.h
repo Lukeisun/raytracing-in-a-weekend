@@ -20,13 +20,15 @@ vec3 unit_vector(vec3 v);
 vec3 cross_vec(vec3 u, vec3 o);
 double dot(vec3 v, vec3 o);
 double length(vec3 v);
+bool near_zero(vec3 *v);
+vec3 reflect_vec(vec3 v, vec3 o);
+vec3 refract_vec(vec3 v, vec3 o, double etai_over_etat);
+// RANDOM
 vec3 random_vec();
 vec3 random_vec_range(double min, double max);
 vec3 random_vec_range(double min, double max);
 vec3 random_in_unit_sphere();
 vec3 random_unit_vector();
 vec3 random_on_hemisphere(vec3 *norm);
-bool near_zero(vec3 *v);
-vec3 reflect_vec(vec3 v, vec3 o);
-vec3 refract_vec(vec3 v, vec3 o, double etai_over_etat);
+vec3 random_in_unit_disk();
 #endif

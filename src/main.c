@@ -11,32 +11,25 @@
 
 int main(void) {
   sphere_arr spheres;
-  material material_ground = {.material = LAMBERTIAN,
-                              .albedo = (vec3){0.8, 0.8, 0.0}};
-  material material_center = {.material = LAMBERTIAN,
-                              .albedo = (vec3){0.1, 0.2, 0.5}};
-  material material_left = {.material = DIELECTRIC, .ir = 1.5};
-  material material_right = {
-      .material = METAL, .albedo = (vec3){0.8, 0.6, 0.2}, .fuzz = 0.0};
   init_sphere_arr(&spheres, 10);
-  insert_sphere_arr(&spheres,
-                    (sphere){(vec3){0, 0, -1}, 0.5, &material_center});
-  insert_sphere_arr(&spheres,
-                    (sphere){(vec3){0, -100.5, -1}, 100, &material_ground});
-  insert_sphere_arr(&spheres, (sphere){(vec3){-1, 0, -1}, 0.5, &material_left});
-  insert_sphere_arr(&spheres,
-                    (sphere){(vec3){-1, 0, -1}, -0.4, &material_left});
-  insert_sphere_arr(&spheres, (sphere){(vec3){1, 0, -1}, 0.5, &material_right});
-  vec3 look_from = {-2, 2, 1};
-  vec3 look_at = {0, 0, -1};
-  camera cam = {
-      .image_width = 600,
-      .look_at = look_at,
-      .look_from = look_from,
-      .samples_per_pixel = 20,
-      .max_depth = 50,
-      .vfov = 30,
-  };
+  material ground = {.material = LAMBERTIAN, .albedo = {0.5, 0.5, 0.5}};
+  insert_sphere_arr(&spheres, (sphere){(vec3){0, -1000, 0}, 1000, &ground});
+  material mat1 = {.material = DIELECTRIC, .ir = 1.5};
+  insert_sphere_arr(&spheres, (sphere){(vec3){0, 1, 0}, 1.0, &mat1});
+  material mat2 = {.material = LAMBERTIAN, .albedo = {0.4, 0.2, 0.1}};
+  insert_sphere_arr(&spheres, (sphere){(vec3){-4, 1, 0}, 1.0, &mat2});
+  material mat3 = {.material = METAL, .albedo = {0.7, 0.6, 0.5}, .fuzz = 0};
+  insert_sphere_arr(&spheres, (sphere){(vec3){4, 1, 0}, 1.0, &mat3});
+  vec3 look_from = {13, 2, 3};
+  vec3 look_at = {0, 0, 0};
+  camera cam = {.image_width = 1200,
+                .look_at = look_at,
+                .look_from = look_from,
+                .samples_per_pixel = 500,
+                .max_depth = 50,
+                .vfov = 20,
+                .defocus_angle = 0,
+                .focus_dist = 10.0};
   init_camera(&cam);
   clock_t begin = clock();
   render(&cam, &spheres);

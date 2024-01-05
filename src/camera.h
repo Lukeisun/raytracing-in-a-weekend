@@ -7,6 +7,8 @@ typedef struct camera {
   int samples_per_pixel;
   int max_depth;
   double vfov;
+  double defocus_angle;
+  double focus_dist;
   vec3 v_up;
   vec3 look_at;
   vec3 look_from;
@@ -14,6 +16,8 @@ typedef struct camera {
   vec3 pixel00;
   vec3 pixel_delta_u;
   vec3 pixel_delta_v;
+  vec3 defocus_disk_u;
+  vec3 defocus_disk_v;
 } camera;
 
 void init_camera(camera *cam);
