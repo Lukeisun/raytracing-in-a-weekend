@@ -13,6 +13,12 @@ bool sphere_hit(sphere s, ray r, interval ray_t, hit_record *rec) {
   }
   double sqrt_discriminant = sqrt(discriminant);
   double root = (-b - sqrt_discriminant) / a;
+  // if (root <= ray_t.min || ray_t.max <= root) {
+  //   root = (-b + sqrt_discriminant) / a;
+  //   if (root <= ray_t.min || ray_t.max <= root) {
+  //     return false;
+  //   }
+  // }
   if (!surrounds(ray_t, root)) {
     root = (-b + sqrt_discriminant) / a;
     if (!surrounds(ray_t, root)) {

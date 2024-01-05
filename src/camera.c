@@ -75,24 +75,18 @@ void render(camera *cam, sphere_arr *spheres) {
 vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
   if (depth <= 0)
     return (vec3){0, 0, 0};
-  hit_record *rec = malloc(sizeof(hit_record));
+  hit_record rec = {0};
   interval initial_interval = {.min = 0.001, .max = INFINITY};
-  if (iter_spheres(spheres, *r, initial_interval, rec)) {
-    ray *scattered = malloc(sizeof(ray));
-    vec3 *attenuation = malloc(sizeof(vec3));
-    if (scatter(rec->mat, r, rec, attenuation, scattered)) {
+  if (iter_spheres(spheres, *r, initial_interval, &rec)) {
+    ray scattered = {0};
+    vec3 attenuation = {0};
+    if (scatter(rec.mat, r, &rec, &attenuation, &scattered)) {
       vec3 ret =
-          mult_vec(*attenuation, ray_color(scattered, depth - 1, spheres));
-      free(scattered);
-      free(attenuation);
+          mult_vec(attenuation, ray_color(&scattered, depth - 1, spheres));
       return ret;
     }
-    free(rec);
-    free(scattered);
-    free(attenuation);
     return (vec3){0, 0, 0};
   }
-  free(rec);
   vec3 unit_direction = unit_vector(r->direction);
   double a = 0.5 * (unit_direction.y + 1.0);
   return add_vec((scalar_mult((vec3){1.0, 1.0, 1.0}, 1.0 - a)),
