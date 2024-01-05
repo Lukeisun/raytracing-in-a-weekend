@@ -63,6 +63,7 @@ bool scatter(material *mat, ray *r_in, hit_record *rec, vec3 *attenuation,
   case DIELECTRIC:
     return scatter_dielectric(mat, r_in, rec, attenuation, scattered);
   default:
+    printf("%d\n", mat->material);
     printf("Unknown material type\n");
     exit(1);
   }

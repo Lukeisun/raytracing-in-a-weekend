@@ -7,7 +7,7 @@ typedef struct hit_record {
   vec3 normal;
   double t;
   bool front_face;
-  material *mat;
+  material mat;
 } hit_record;
 void set_face_normal(hit_record *hit, ray r, vec3 outward_normal);
 

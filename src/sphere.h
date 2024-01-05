@@ -6,7 +6,7 @@
 typedef struct sphere {
   vec3 center;
   double radius;
-  material *mat;
+  material mat;
 } sphere;
 bool sphere_hit(sphere s, ray r, interval ray_t, hit_record *rec);
 #endif

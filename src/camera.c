@@ -83,7 +83,7 @@ vec3 ray_color(ray *r, int depth, sphere_arr *spheres) {
   if (iter_spheres(spheres, *r, initial_interval, &rec)) {
     ray scattered = {0};
     vec3 attenuation = {0};
-    if (scatter(rec.mat, r, &rec, &attenuation, &scattered)) {
+    if (scatter(&rec.mat, r, &rec, &attenuation, &scattered)) {
       vec3 ret =
           mult_vec(attenuation, ray_color(&scattered, depth - 1, spheres));
       return ret;
@@ -107,7 +107,7 @@ ray get_ray(camera *cam, int i, int j) {
   vec3 pixel_sample = add_vec(pixel_center, pixel_sample_square(cam));
   vec3 ray_origin =
       (cam->defocus_angle <= 0) ? cam->center : defocus_disk_sample(cam);
-  vec3 ray_dir = sub_vec(pixel_sample, cam->center);
+  vec3 ray_dir = sub_vec(pixel_sample, ray_origin);
   return (ray){ray_origin, ray_dir};
 }
 vec3 pixel_sample_square(camera *cam) {
