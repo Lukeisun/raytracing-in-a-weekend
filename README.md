@@ -6,6 +6,10 @@ If you'd like to use a different program you can just create the .ppm file by do
 
 If you have any suggestions I would love to hear them! I have never really messed around with Makefiles and I suspect that it is not great in its current state but it works for my purposes so far. Also this is my first big C project, so I also suspect that I am not doing great things with headers.
 
+# Final Render
+
+![Final Render](./final_render.png) 
+
 ## TODO
 - Continue on with second book
 - Create way for the program to handle different types of objects (More than just spheres) 
